@@ -1,10 +1,7 @@
 namespace Data.SmithReview.Domain {
-    using System;
     using System.Data.Entity;
-    using System.ComponentModel.DataAnnotations.Schema;
-    using System.Linq;
-
-    public partial class SmithReviewsContext : DbContext {
+    using Interfaces;
+    public partial class SmithReviewsContext : DbContext, IDbContext {
         public SmithReviewsContext()
             : base("name=SmithReviewsContext") {
         }

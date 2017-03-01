@@ -8,7 +8,7 @@ namespace Data.SmithReview.Domain
 
     public partial class Review
     {
-        [DatabaseGenerated(DatabaseGeneratedOption.None)]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
 
         [Required]
