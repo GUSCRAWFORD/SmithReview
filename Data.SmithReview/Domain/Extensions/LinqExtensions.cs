@@ -8,39 +8,39 @@ using System.Threading.Tasks;
 namespace Data.SmithReview.Domain.Extensions {
     public static class LinqExtensions {
         #region OrderBy, ThenBy, Descending
-        public static IQueryable<T> OrderBy<T>(this IQueryable<T> source, string propertyName)
+        public static IOrderedQueryable<T> OrderBy<T>(this IQueryable<T> source, string propertyName)
         {
-            return (IQueryable<T>)OrderBy((IQueryable)source, propertyName);
+            return (IOrderedQueryable<T>)OrderBy((IQueryable)source, propertyName);
         }
-        public static IQueryable<T> OrderByDescending<T>(this IQueryable<T> source, string propertyName)
+        public static IOrderedQueryable<T> OrderByDescending<T>(this IQueryable<T> source, string propertyName)
         {
-            return (IQueryable<T>)OrderByDescending((IQueryable)source, propertyName);
+            return (IOrderedQueryable<T>)OrderByDescending((IQueryable)source, propertyName);
         }
-        public static IQueryable<T> ThenBy<T>(this IQueryable<T> source, string propertyName)
+        public static IOrderedQueryable<T> ThenBy<T>(this IOrderedQueryable<T> source, string propertyName)
         {
-            return (IQueryable<T>)ThenBy((IQueryable)source, propertyName);
+            return (IOrderedQueryable<T>)ThenBy((IOrderedQueryable)source, propertyName);
         }
-        public static IQueryable<T> ThenByDescending<T>(this IQueryable<T> source, string propertyName)
+        public static IOrderedQueryable<T> ThenByDescending<T>(this IOrderedQueryable<T> source, string propertyName)
         {
-            return (IQueryable<T>)ThenByDescending((IQueryable)source, propertyName);
+            return (IOrderedQueryable<T>)ThenByDescending((IOrderedQueryable)source, propertyName);
         }
-        public static IQueryable OrderBy(this IQueryable source, string propertyName) {
+        public static IOrderedQueryable OrderBy(this IQueryable source, string propertyName) {
             return ExpandedOrderExpression("OrderBy", source, propertyName);
         }
-        public static IQueryable OrderByDescending (this IQueryable source, string propertyName) {
+        public static IOrderedQueryable OrderByDescending (this IQueryable source, string propertyName) {
             return ExpandedOrderExpression("OrderByDescending", source, propertyName);
         }
-        public static IQueryable ThenBy (this IQueryable source, string propertyName) {
+        public static IOrderedQueryable ThenBy (this IOrderedQueryable source, string propertyName) {
             return ExpandedOrderExpression("ThenBy", source, propertyName);
         }
-        public static IQueryable ThenByDescending (this IQueryable source, string propertyName) {
+        public static IOrderedQueryable ThenByDescending (this IOrderedQueryable source, string propertyName) {
             return ExpandedOrderExpression("ThenByDescending", source, propertyName);
         }
-        public static IQueryable ExpandedOrderExpression(string orderMethod, IQueryable source, string propertyName)
+        public static IOrderedQueryable ExpandedOrderExpression(string orderMethod, IQueryable source, string propertyName)
         {
             var x = Expression.Parameter(source.ElementType);
             var selector = Expression.Lambda(Expression.PropertyOrField(x, propertyName), x);
-            return source.Provider.CreateQuery(
+            return (IOrderedQueryable) source.Provider.CreateQuery(
             Expression.Call(typeof(Queryable), orderMethod, new Type[] { source.ElementType, selector.Body.Type },
                     source.Expression, selector
                     ));

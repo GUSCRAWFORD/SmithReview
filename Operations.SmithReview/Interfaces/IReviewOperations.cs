@@ -8,6 +8,6 @@ using Data.SmithReview.Repos.Interfaces;
 
 namespace Operations.SmithReview.Interfaces
 {
-    public interface IReviewOperations : IOperations<ReviewModel, int> {
+    public interface IReviewOperations : IOperations<ReviewModel, Review, int> {
     }
 }

@@ -40,8 +40,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Extensions\BusinessModelExtensions.cs" />
-    <Compile Include="Extensions\DomainModelExtensions.cs" />
     <Compile Include="Interfaces\IItemOperations.cs" />
     <Compile Include="Interfaces\IReviewOperations.cs" />
     <Compile Include="Operations.cs" />
@@ -62,6 +60,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="---\" />
+    <Folder Include="Extensions\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

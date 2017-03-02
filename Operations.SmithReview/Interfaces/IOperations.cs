@@ -1,13 +1,18 @@
-﻿using Models.SmithReview;
+﻿using Data.SmithReview.Domain;
+using Models.SmithReview;
 using System;
 using System.Collections.Generic;
 
 namespace Operations.SmithReview.Interfaces {
-    public interface IOperations<ModelType, KeyType> : IDisposable
-            where ModelType : BaseBusinessModel
-            where KeyType : IComparable {
-        ModelType SingleByKey(KeyType id);
-        IEnumerable<ModelType> All(int page, int perPage, params string[] orderBy);
-        void Save(ModelType item);
+    public interface IOperations<TModel, TDomain, TKey> : IDisposable
+            where TModel : BaseBusinessModel
+            where TDomain : BaseDomainModel
+            where TKey : IComparable {
+
+        TModel SingleByKey(TKey id);
+
+        IEnumerable<TModel> All(int page, int perPage, params string[] orderBy);
+
+        void Save(TModel item);
     }
 }

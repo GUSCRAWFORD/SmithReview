@@ -9,18 +9,18 @@ using System.Linq;
 using System.Linq.Expressions;
 
 namespace Data.SmithReview.Repos {
-    public class GenRepo<DomainContext, DomainType> : IGenRepo<DomainContext, DomainType>
-            where DomainType : BaseDomainModel
-            where DomainContext : IDbContext {
-        public GenRepo(DomainContext context) {
+    public class GenRepo<TContext, TDomain> : IGenRepo<TContext, TDomain>
+            where TDomain : BaseDomainModel
+            where TContext : IDbContext {
+        public GenRepo(TContext context) {
             _context = context;
-            _dbSet = context.Set<DomainType>();
+            _dbSet = context.Set<TDomain>();
         }
 
-        protected DomainContext _context;
-        protected DbSet<DomainType> _dbSet;
-        protected IQueryable<DomainType> _query;
-        public virtual GenRepo<DomainContext, DomainType> Include(params string[] includedProperties) {
+        protected TContext _context;
+        protected DbSet<TDomain> _dbSet;
+        protected IQueryable<TDomain> _query;
+        public virtual GenRepo<TContext, TDomain> Include(params string[] includedProperties) {
             _query = _dbSet;
             foreach(string include in includedProperties) {
                 _query = _query.Include(include);
@@ -28,35 +28,43 @@ namespace Data.SmithReview.Repos {
             return this;
         }
 
-        public virtual IEnumerable<DomainType> Query(
-                Expression<Func<DomainType, bool>> predicate = null,
+        public virtual IEnumerable<TDomain> Query(
+                Expression<Func<TDomain, bool>> predicate = null,
                 int page = 0,
                 int perPage = 0,
                 params string[] orderBy) {
-            IQueryable<DomainType> query = _query ?? _dbSet;
-            IQueryable<DomainType> orderedQuery = null;
+            return Query<TDomain>((x)=>x, predicate, page, perPage, orderBy);
+        }
+        public virtual IEnumerable<TResult> Query<TResult>(
+                Expression<Func<TDomain, TResult>> select,
+                Expression<Func<TDomain, bool>> predicate = null,
+                int page = 0,
+                int perPage = 0,
+                params string[] orderBy) {
+            IQueryable<TDomain> query = _query ?? _dbSet;
+            IOrderedQueryable<TResult> orderedQuery = null;
+            IQueryable<TResult> projectedQuery = null;
             if (predicate != null) query = query.Where(predicate);
-            
+            projectedQuery = query.Select(select);
             if (orderBy != null) {
                 foreach(string column in orderBy){
                     char firstChar = column.First();
                     string columnName = firstChar == '+' || firstChar == '-' ? column.Substring(1) : column;
-                    Expression<Func<DomainType, object>> propertyExpression = (x)=> x.GetType().GetProperty(columnName).GetValue(x);
+                    Expression<Func<TDomain, object>> propertyExpression = (x)=> x.GetType().GetProperty(columnName).GetValue(x);
                     if (orderedQuery != null)
                         orderedQuery = firstChar == '-' ? orderedQuery.ThenByDescending(columnName) : orderedQuery.ThenBy(columnName);
                     else
-                        orderedQuery = firstChar == '-' ?  query.OrderByDescending(columnName) : query.OrderBy(columnName);
+                        orderedQuery = firstChar == '-' ?  projectedQuery.OrderByDescending(columnName) : projectedQuery.OrderBy(columnName);
                 }
-                query = orderedQuery;
             }
+            projectedQuery = (orderedQuery ?? projectedQuery);
             if (page > 0 && perPage > 0)
-                query
+                projectedQuery = projectedQuery
                     .Skip((page - 1) * perPage)
                     .Take(perPage);
-            return query.ToList();
+            return projectedQuery.ToList();
         }
-
-        public virtual void Upsert(DomainType item) {
+        public virtual void Upsert(TDomain item) {
             if (item.HasEmptyId()) {
                 _dbSet.Add(item);
             }
@@ -66,7 +74,7 @@ namespace Data.SmithReview.Repos {
             }
         }
 
-        public virtual DomainType Find(params object[] keyValues) {
+        public virtual TDomain Find(params object[] keyValues) {
             return _dbSet.Find(keyValues);
         }
     }

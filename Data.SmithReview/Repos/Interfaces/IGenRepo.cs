@@ -8,16 +8,27 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace Data.SmithReview.Repos.Interfaces {
-    public interface IGenRepo<DomainContext, DomainType>
-            where DomainType : BaseDomainModel
-            where DomainContext : Domain.Interfaces.IDbContext {
-        GenRepo<DomainContext, DomainType> Include(params string[] includedProperties);
-        IEnumerable<DomainType> Query(
-                Expression<Func<DomainType, bool>> predicate = null,
+    public interface IGenRepo<TContext, TDomain>
+            where TDomain : BaseDomainModel
+            where TContext : Domain.Interfaces.IDbContext {
+
+        GenRepo<TContext, TDomain> Include(params string[] includedProperties);
+
+        IEnumerable<TDomain> Query(
+                Expression<Func<TDomain, bool>> predicate = null,
                 int page = 0,
                 int perPage = 0,
                 params string[] orderBy);
-        void Upsert(DomainType item);
-        DomainType Find(params object[] keyValues);
+
+        void Upsert(TDomain item);
+
+        TDomain Find(params object[] keyValues);
+
+        IEnumerable<TResult> Query<TResult>(
+                Expression<Func<TDomain, TResult>> select,
+                Expression<Func<TDomain, bool>> predicate = null,
+                int page = 0,
+                int perPage = 0,
+                params string[] orderBy);
     }
 }

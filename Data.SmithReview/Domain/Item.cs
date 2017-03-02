@@ -23,5 +23,14 @@ namespace Data.SmithReview.Domain
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Review> Reviews { get; set; }
+
+        [NotMapped]
+        public double AverageRating { get; set; }
+        [NotMapped]
+        public int SampleSize { get; set; }
+        [NotMapped]
+        public int Highest { get; set; }
+        [NotMapped]
+        public int Lowest { get; set; }
     }
 }
