@@ -10,5 +10,7 @@ namespace Data.SmithReview.Domain.Interfaces {
     public interface IDbContext {   
         DbSet<TEntity> Set<TEntity>() where TEntity : class;
         DbEntityEntry<TEntity> Entry<TEntity>(TEntity item) where TEntity : class;
+        void Dispose();
+        int SaveChanges();
     }
 }

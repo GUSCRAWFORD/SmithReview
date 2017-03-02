@@ -66,27 +66,19 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Class1.cs" />
     <Compile Include="Domain\BaseDomainModel.cs" />
-    <Compile Include="Domain\DomainModelExtensions.cs" />
+    <Compile Include="Domain\Extensions\DomainModelExtensions.cs" />
+    <Compile Include="Domain\Extensions\LinqExtensions.cs" />
     <Compile Include="Domain\Interfaces\IDbContext.cs" />
     <Compile Include="Domain\Item.cs" />
     <Compile Include="Domain\Review.cs" />
-    <Compile Include="Domain\SmithReviewsContext.cs" />
+    <Compile Include="Domain\SmithReviewContext.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repos\GenRepo.cs" />
     <Compile Include="Repos\Interfaces\IGenRepo.cs" />
+    <Compile Include="SmithReviewContextProvider.cs" />
   </ItemGroup>
   <ItemGroup />
-  <ItemGroup>
-    <Content Include="SmithReviewSchema.mdf">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="SmithReviewSchema_log.ldf">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      <DependentUpon>SmithReviewSchema.mdf</DependentUpon>
-    </Content>
-  </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.5.2">
       <Visible>False</Visible>

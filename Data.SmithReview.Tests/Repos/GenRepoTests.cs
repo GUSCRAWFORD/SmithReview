@@ -22,6 +22,7 @@ namespace Data.SmithReview.Repos.Tests {
                 new Item { Id = 1}, new Item { Id = 2 }, new Item { Id = 4, Name = "item" }, new Item { Id = 3, Name = "item" }
             }).Object);
             repo = new GenRepo<IDbContext, Item>(unitOfWork.Object);
+
         }
         [TestMethod()]
         public void GenRepoTest() {
@@ -31,10 +32,14 @@ namespace Data.SmithReview.Repos.Tests {
 
         [TestMethod()]
         public void QueryTest() {
-            var result = repo.Query((item)=>item.Name == "item", (itemsBy)=>itemsBy.OrderBy((item)=>item.Id), "Reviews");
+            var result = repo.Query((item)=>item.Name == "item", 1, 10, "Id");
             Assert.IsNotNull(result);
             Assert.AreEqual(2, result.Count());
             Assert.IsTrue(result.First().Id < result.Last().Id);
+            result = repo.Query((item)=>item.Name == "item", 1, 10, "+Id");
+            Assert.IsTrue(result.First().Id < result.Last().Id);
+            result = repo.Query((item)=>item.Name == "item", 1, 10, "-Id");
+            Assert.IsTrue(result.First().Id > result.Last().Id);
         }
 
         [TestMethod()]

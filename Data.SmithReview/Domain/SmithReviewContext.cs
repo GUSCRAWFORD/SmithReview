@@ -1,11 +1,13 @@
 namespace Data.SmithReview.Domain {
     using System.Data.Entity;
     using Interfaces;
-    public partial class SmithReviewsContext : DbContext, IDbContext {
-        public SmithReviewsContext()
+    public partial class SmithReviewContext : DbContext, IDbContext {
+        public SmithReviewContext(string connectionStringName)
+            : base(string.Format("name={0}",connectionStringName)) {
+        }
+        public SmithReviewContext()
             : base("name=SmithReviewsContext") {
         }
-
         public virtual DbSet<Item> Items { get; set; }
         public virtual DbSet<Review> Reviews { get; set; }
 
@@ -15,10 +17,6 @@ namespace Data.SmithReview.Domain {
                 .WithRequired(e => e.Item)
                 .HasForeignKey(e => e.Reviewing)
                 .WillCascadeOnDelete(false);
-
-            modelBuilder.Entity<Review>()
-                .Property(e => e.Rating)
-                .IsFixedLength();
         }
     }
 }

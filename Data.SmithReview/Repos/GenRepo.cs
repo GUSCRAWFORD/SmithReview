@@ -1,4 +1,5 @@
 ﻿using Data.SmithReview.Domain;
+using Data.SmithReview.Domain.Extensions;
 using Data.SmithReview.Domain.Interfaces;
 using Data.SmithReview.Repos.Interfaces;
 using System;
@@ -18,17 +19,41 @@ namespace Data.SmithReview.Repos {
 
         protected DomainContext _context;
         protected DbSet<DomainType> _dbSet;
+        protected IQueryable<DomainType> _query;
+        public virtual GenRepo<DomainContext, DomainType> Include(params string[] includedProperties) {
+            _query = _dbSet;
+            foreach(string include in includedProperties) {
+                _query = _query.Include(include);
+            }
+            return this;
+        }
 
         public virtual IEnumerable<DomainType> Query(
                 Expression<Func<DomainType, bool>> predicate = null,
-                Func<IQueryable<DomainType>, IOrderedQueryable<DomainType>> orderBy = null,
-                params string[] includedProperties) {
-            IQueryable<DomainType> query = _dbSet;
+                int page = 0,
+                int perPage = 0,
+                params string[] orderBy) {
+            IQueryable<DomainType> query = _query ?? _dbSet;
+            IQueryable<DomainType> orderedQuery = null;
             if (predicate != null) query = query.Where(predicate);
-            foreach(string include in includedProperties) {
-                query = query.Include(include);
+            
+            if (orderBy != null) {
+                foreach(string column in orderBy){
+                    char firstChar = column.First();
+                    string columnName = firstChar == '+' || firstChar == '-' ? column.Substring(1) : column;
+                    Expression<Func<DomainType, object>> propertyExpression = (x)=> x.GetType().GetProperty(columnName).GetValue(x);
+                    if (orderedQuery != null)
+                        orderedQuery = firstChar == '-' ? orderedQuery.ThenByDescending(columnName) : orderedQuery.ThenBy(columnName);
+                    else
+                        orderedQuery = firstChar == '-' ?  query.OrderByDescending(columnName) : query.OrderBy(columnName);
+                }
+                query = orderedQuery;
             }
-            return orderBy != null ? orderBy(query).ToList() : query.ToList();
+            if (page > 0 && perPage > 0)
+                query
+                    .Skip((page - 1) * perPage)
+                    .Take(perPage);
+            return query.ToList();
         }
 
         public virtual void Upsert(DomainType item) {

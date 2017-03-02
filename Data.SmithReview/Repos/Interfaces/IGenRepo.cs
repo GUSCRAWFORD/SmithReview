@@ -11,11 +11,12 @@ namespace Data.SmithReview.Repos.Interfaces {
     public interface IGenRepo<DomainContext, DomainType>
             where DomainType : BaseDomainModel
             where DomainContext : Domain.Interfaces.IDbContext {
-
+        GenRepo<DomainContext, DomainType> Include(params string[] includedProperties);
         IEnumerable<DomainType> Query(
                 Expression<Func<DomainType, bool>> predicate = null,
-                Func<IQueryable<DomainType>, IOrderedQueryable<DomainType>> orderBy = null,
-                params string[] includedProperties);
+                int page = 0,
+                int perPage = 0,
+                params string[] orderBy);
         void Upsert(DomainType item);
         DomainType Find(params object[] keyValues);
     }
