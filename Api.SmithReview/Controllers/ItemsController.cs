@@ -1,20 +1,18 @@
-﻿using Data.SmithReview.Domain.Interfaces;
-
-using Operations.SmithReview.Interfaces;
-using Operations.SmithReview;
-
+﻿using Operations.SmithReview.Interfaces;
 using System.Collections.Generic;
 using System.Web.Http;
 using Models.SmithReview;
-using Data.SmithReview;
+using System.Web.Http.Cors;
+using Microsoft.Practices.ServiceLocation;
 
 namespace Api.SmithReview.Controllers
 {
+    [EnableCors(origins: "http://localhost:53180", headers: "*", methods: "*")]
     public class ItemsController : SmithReviewController
     {
         private IItemOperations _itemOperations;
         public ItemsController() {
-            _itemOperations = new ItemOperations();
+            _itemOperations = ServiceLocator.Current.GetInstance<IItemOperations>("IItemOperations");
         }
         ~ItemsController() {
             _itemOperations.Dispose();

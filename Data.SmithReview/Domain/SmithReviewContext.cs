@@ -2,9 +2,6 @@ namespace Data.SmithReview.Domain {
     using System.Data.Entity;
     using Interfaces;
     public partial class SmithReviewContext : DbContext, IDbContext {
-        public SmithReviewContext(string connectionStringName)
-            : base(string.Format("name={0}",connectionStringName)) {
-        }
         public SmithReviewContext()
             : base("name=SmithReviewsContext") {
         }
