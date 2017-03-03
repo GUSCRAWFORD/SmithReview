@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{EE7C5741-1274-408D-85E2-373907BC3926}</ProjectGuid>
+    <ProjectGuid>{7ACFFAD7-9C66-42E8-B385-20C5B98EA69F}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Operations.SmithReview</RootNamespace>
-    <AssemblyName>Operations.SmithReview</AssemblyName>
+    <RootNamespace>Models.SmithReview</RootNamespace>
+    <AssemblyName>Models.SmithReview</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -40,26 +40,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Interfaces\IItemOperations.cs" />
-    <Compile Include="Interfaces\IReviewOperations.cs" />
-    <Compile Include="Operations.cs" />
-    <Compile Include="ReviewOperations.cs" />
-    <Compile Include="ItemOperations.cs" />
-    <Compile Include="Interfaces\IOperations.cs" />
+    <Compile Include="BaseBusinessModel.cs" />
+    <Compile Include="ItemModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Data.SmithReview\Data.SmithReview.csproj">
-      <Project>{87b56629-0bf9-482d-8c20-13a44c729729}</Project>
-      <Name>Data.SmithReview</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Models.SmithReview\Models.SmithReview.csproj">
-      <Project>{7acffad7-9c66-42e8-b385-20c5b98ea69f}</Project>
-      <Name>Models.SmithReview</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Extensions\" />
+    <Compile Include="ReviewModel.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

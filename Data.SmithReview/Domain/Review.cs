@@ -6,18 +6,15 @@ namespace Data.SmithReview.Domain
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Data.Entity.Spatial;
 
-    public partial class Review
+    public partial class Review : BaseDomainModel
     {
-        [DatabaseGenerated(DatabaseGeneratedOption.None)]
-        public int Id { get; set; }
 
         [Required]
         [StringLength(280)]
         public string Comment { get; set; }
 
         [Required]
-        [StringLength(10)]
-        public string Rating { get; set; }
+        public int Rating { get; set; }
 
         public int Reviewing { get; set; }
 

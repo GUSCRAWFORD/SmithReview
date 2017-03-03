@@ -6,7 +6,7 @@ namespace Data.SmithReview.Domain
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Data.Entity.Spatial;
 
-    public partial class Item
+    public partial class Item : BaseDomainModel
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Item()
@@ -14,14 +14,23 @@ namespace Data.SmithReview.Domain
             Reviews = new HashSet<Review>();
         }
 
-        [DatabaseGenerated(DatabaseGeneratedOption.None)]
-        public int Id { get; set; }
-
         [Required]
         [StringLength(50)]
         public string Name { get; set; }
+        
+        [StringLength(50)]
+        public string Icon { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Review> Reviews { get; set; }
+
+        [NotMapped]
+        public double AverageRating { get; set; }
+        [NotMapped]
+        public int SampleSize { get; set; }
+        [NotMapped]
+        public int Highest { get; set; }
+        [NotMapped]
+        public int Lowest { get; set; }
     }
 }
