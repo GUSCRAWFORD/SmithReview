@@ -3,15 +3,17 @@ angular.module('ui.smithReview')
 	.component('review', {
 		template: require('./review.template.html'),
 		controller: reviewController,
-		bidings: {
+		bindings: {
 			item:'<'
 		}
 	})
 	.config(function ($routeProvider) {
 		$routeProvider.when('/review/:itemId', {
 			template: '<review item="$resolve.item"></review>',
-			resolve: function (itemResource, $route) {
-				return itemResource.get({ id: $route.current.params.itemId }).$promise;
+			resolve: {
+				item:function (itemResource, $route) {
+					return itemResource.get({ id: $route.current.params.itemId }).$promise;
+				}
 			}
 		})
 	});
@@ -21,10 +23,32 @@ function reviewController(reviewResource, smithContstraints) {
 	var ctrl = this;
 	ctrl.busy = true;
 	ctrl.$onInit = onInit;
+	ctrl.edit = edit;
+	ctrl.discardEdit = discardEdit;
+	ctrl.saveEdit = saveEdit;
 	ctrl.constraints = smithContstraints;
+
+	function edit(val) {
+		ctrl.editing = {
+			Rating: val,
+			Comment: '',
+			Reviewing:{Id:ctrl.item.Id}
+		};
+	}
+	function discardEdit() {
+		ctrl.editing = null;
+	}
+	function saveEdit() {
+		reviewResource.save(ctrl.editing).$promise.then(function () {
+		});
+	}
 	function onInit() {
-		reviewResource.query({item:ctrl.item.Id}).$promise.then(function (items) {
-			ctrl.items = items;
+		reviewResource.query({
+			item: ctrl.item.Id,
+			perPage: smithContstraints.defaultPerPage,
+			orderBy: smithContstraints.defaultOrderBy
+		}).$promise.then(function (reviews) {
+			ctrl.reviews = reviews;
 			ctrl.busy = false;
 		});
 	}

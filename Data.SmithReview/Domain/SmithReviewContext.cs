@@ -5,11 +5,12 @@ namespace Data.SmithReview.Domain {
         public SmithReviewContext()
             : base("name=SmithReviewsContext") {
         }
-        public virtual DbSet<Item> Items { get; set; }
+        public virtual DbSet<ReviewableItem> Items { get; set; }
+        public virtual DbSet<AnalyzedItem> AnalyzedItems { get; set; }
         public virtual DbSet<Review> Reviews { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder) {
-            modelBuilder.Entity<Item>()
+            modelBuilder.Entity<ReviewableItem>()
                 .HasMany(e => e.Reviews)
                 .WithRequired(e => e.Item)
                 .HasForeignKey(e => e.Reviewing)

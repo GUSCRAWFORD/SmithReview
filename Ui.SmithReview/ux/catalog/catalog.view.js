@@ -18,7 +18,10 @@ function catalogController(itemResource, smithContstraints) {
 	ctrl.$onInit = onInit;
 	ctrl.constraints = smithContstraints;
 	function onInit() {
-		itemResource.query().$promise.then(function (items) {
+		itemResource.query({ page: smithContstraints.defaultPage,
+			perPage: smithContstraints.defaultPerPage,
+			orderBy: smithContstraints.defaultOrderBy
+		}).$promise.then(function (items) {
 			ctrl.items = items;
 			ctrl.busy = false;
 		});

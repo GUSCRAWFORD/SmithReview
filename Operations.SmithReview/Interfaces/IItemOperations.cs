@@ -8,7 +8,7 @@ using Data.SmithReview.Repos.Interfaces;
 
 namespace Operations.SmithReview.Interfaces
 {
-    public interface IItemOperations : IOperations<ItemModel, Item, int> {
+    public interface IItemOperations : IOperations<ItemModel, ReviewableItem, int> {
         
     }
 }

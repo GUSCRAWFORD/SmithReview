@@ -24,9 +24,9 @@ namespace Api.SmithReview.Controllers
         }
 
         // GET: api/Items/5
-        public string Get(int id)
+        public ItemModel Get(int id)
         {
-            return "value";
+            return _itemOperations.SingleByKey(id);
         }
 
         // POST: api/Items

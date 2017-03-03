@@ -29,13 +29,9 @@
             <h1>Gus Plus TFS</h1>
             <p class="lead">See how Gus uses TFS tasks and storyboarding to manage projects and deliver in a team.  Complete source and sprint-burndown available at guscrawford.visualstudio.com</p>
             <p>
-                <a class="btn btn-lg btn-success" href="#" role="button"><i class="vso-icon" aria-hidden="true"></i> Join SmithReview <small>on Visualstudio.com</small></a>
-                <a href="#" class="btn btn-default"><i class="fa fa-close" aria-hidden="true"></i> Thank you, no</a>
+                <a class="btn btn-lg btn-success" href="https://guscrawford.visualstudio.com/SmithReview/" target="_blank" role="button"><i class="vso-icon" aria-hidden="true"></i> Join SmithReview <small>on Visualstudio.com</small></a>
             </p>
-            <hr>
-            <p class="text-right">
-                <a class="btn btn-sm btn-default" href="#" role="button"><i class="fa fa-bitbucket" aria-hidden="true"></i> View Now on Bitbucket</a>
-            </p>
+
         </div>
 
         <div ng-view></div>

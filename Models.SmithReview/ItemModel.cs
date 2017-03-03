@@ -9,8 +9,8 @@ namespace Models.SmithReview {
         public string Name { get; set; }
         public string Icon { get; set; }
         public double AverageRating { get; set; }
-        public int SampleSize { get; set; }
-        public int Highest { get; set; }
-        public int Lowest { get; set; }
+        public int ReviewCount { get; set; }
+        public int HighestRating { get; set; }
+        public int LowestRating { get; set; }
     }
 }

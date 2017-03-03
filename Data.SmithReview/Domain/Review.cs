@@ -18,6 +18,6 @@ namespace Data.SmithReview.Domain
 
         public int Reviewing { get; set; }
 
-        public virtual Item Item { get; set; }
+        public virtual ReviewableItem Item { get; set; }
     }
 }

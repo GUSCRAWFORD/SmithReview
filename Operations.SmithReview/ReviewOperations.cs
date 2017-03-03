@@ -1,5 +1,4 @@
 ﻿using Operations.SmithReview.Interfaces;
-using System;
 using Data.SmithReview.Repos;
 using Data.SmithReview.Domain.Interfaces;
 using Models.SmithReview;
@@ -7,6 +6,7 @@ using Data.SmithReview.Domain;
 using Data.SmithReview.Repos.Interfaces;
 using System.Collections.Generic;
 using System.Linq;
+using Operations.SmithReview.Extensions;
 
 namespace Operations.SmithReview
 {
@@ -35,11 +35,11 @@ namespace Operations.SmithReview
 
         public override void Save(ReviewModel review) {
             _reviewRepo.Upsert(new Review {
-                Id = review.Id,
                 Comment = review.Comment,
                 Rating = review.Rating,
                 Reviewing = review.Reviewing.Id
             });
+            _context.SaveChanges();
         }
 
         protected override ReviewModel ToModel(Review domain) {
