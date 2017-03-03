@@ -4,9 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Operations.SmithReview
+namespace Models.SmithReview
 {
-    public class Class1
+    public abstract class BaseBusinessModel
     {
+        public int Id;
     }
 }

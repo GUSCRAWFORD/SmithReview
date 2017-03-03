@@ -1,0 +1,31 @@
+﻿<!--
+{   
+    "Id":1,
+    "Name":"GitHub",
+    "Icon":null,
+    "AverageRating":5,
+    "SampleSize":1,
+    "Highest":5,
+    "Lowest":5
+}
+-->
+<div class="row marketing">
+    <div ng-if="$ctrl.busy">
+        <span class="fa fa-lg fa-spinner loading-spinner" aria-hidden="true"></span> Loading...
+    </div>
+    <div ng-if="!$ctrl.busy"
+         ng-repeat="item in $ctrl.items"
+         class="col-lg-6" >
+        <span class="fa fa-{{item.Icon}}" aria-hidden="true"></span>
+        <span>
+            <h4>{{ item.Name }}</h4>
+            <p>
+                <span uib-rating ng-model="item.AverageRating"
+                      max="$ctrl.constraints.maxRating"
+                      readonly="true"
+                      aria-labelledby="default-rating"></span>
+            </p>
+        </span>
+    </div>
+    
+</div>
