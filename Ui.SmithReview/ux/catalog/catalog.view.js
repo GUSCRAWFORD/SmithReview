@@ -10,11 +10,17 @@ angular.module('ui.smithReview')
 		})
 	});
 
-catalogController.$inject = ['itemResource'];
-function catalogController(itemResource) {
+catalogController.$inject = ['itemResource','smithConstraints'];
+function catalogController(itemResource, smithContstraints) {
 	var ctrl = this;
 	ctrl.busy = true;
-	itemResource.query().$promise.then(function () {
-		ctrl.busy = false;
-	});
+	ctrl.$readOnly = true;
+	ctrl.$onInit = onInit;
+	ctrl.constraints = smithContstraints;
+	function onInit() {
+		itemResource.query().$promise.then(function (items) {
+			ctrl.items = items;
+			ctrl.busy = false;
+		});
+	}
 }
