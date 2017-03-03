@@ -1,1 +1,1 @@
-﻿
+﻿require('./review.view')
