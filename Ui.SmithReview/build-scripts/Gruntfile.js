@@ -41,5 +41,5 @@
 
 	// Default task(s).
 	grunt.registerTask('default', ['sass', 'webpack', 'watch']);
-
+	grunt.registerTask('build', ['sass', 'webpack']);
 };
