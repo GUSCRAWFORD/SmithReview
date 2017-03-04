@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web.Http;
+﻿using System.Web.Http;
+
 
 namespace Api.SmithReview
 {
@@ -21,5 +19,6 @@ namespace Api.SmithReview
                 defaults: new { id = RouteParameter.Optional }
             );
         }
+
     }
 }

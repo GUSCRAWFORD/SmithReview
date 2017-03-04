@@ -10,20 +10,23 @@ using System.Linq;
 namespace Operations.SmithReview
 {
     public class ItemOperations : Operations<ItemModel, ReviewableItem, int>, IItemOperations {
-        public ItemOperations(IDbContext unitOfWork = null, IGenRepo<IDbContext, ReviewableItem> itemsRepo = null) :
-                base (unitOfWork) {
-            _itemsRepo = itemsRepo ?? new GenRepo<IDbContext, ReviewableItem>(_context);
+        public ItemOperations(IDbContextProvider contextProvider, IGenRepo<IDbContext, ReviewableItem> itemsRepo = null) :
+                base (contextProvider) {
+            _contextProvider = contextProvider;
+            _itemsRepo = itemsRepo ?? new GenRepo<IDbContext, ReviewableItem>(contextProvider);
         }
+
+        IDbContextProvider _contextProvider;
         IGenRepo<IDbContext, ReviewableItem> _itemsRepo;
 
         public override ItemModel SingleByKey(int id) {
-            var analyzedItemsRepo = new GenRepo<IDbContext, AnalyzedItem>(_context);
-            return ToModel(analyzedItemsRepo.Find(id));
+            var analyzedItemsRepo = new GenRepo<IDbContext, AnalyzedItem>(_contextProvider);
+            return ToModel(analyzedItemsRepo.AsNoTracking().Find(id));
         }
 
         public override IEnumerable<ItemModel> All(int page, int perPage, params string[] orderBy) {
-            var analyzedItemsRepo = new GenRepo<IDbContext, AnalyzedItem>(_context);
-            return analyzedItemsRepo.Query(null, page, perPage, orderBy).Select(x=>ToModel(x));
+            var analyzedItemsRepo = new GenRepo<IDbContext, AnalyzedItem>(_contextProvider);
+            return analyzedItemsRepo.AsNoTracking().Query(null, page, perPage, orderBy).Select(x=>ToModel(x));
         }
 
         public override void Save(ItemModel item) {

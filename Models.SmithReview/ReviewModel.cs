@@ -9,5 +9,6 @@ namespace Models.SmithReview {
         public int Rating { get; set; }
         public string Comment { get; set; }
         public ItemModel Reviewing { get; set; }
+        public DateTimeOffset Date { get; set; }
     }
 }

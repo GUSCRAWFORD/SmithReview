@@ -13,6 +13,7 @@ namespace Data.SmithReview.Repos.Interfaces {
             where TContext : Domain.Interfaces.IDbContext {
 
         GenRepo<TContext, TDomain> Include(params string[] includedProperties);
+        GenRepo<TContext, TDomain> AsNoTracking();
 
         IEnumerable<TDomain> Query(
                 Expression<Func<TDomain, bool>> predicate = null,

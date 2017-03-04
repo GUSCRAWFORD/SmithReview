@@ -14,14 +14,17 @@ namespace Data.SmithReview.Repos.Tests {
     [TestClass()]
     public class GenRepoTests {
         Mock<IDbContext> unitOfWork;
+        Mock<IDbContextProvider> contextProvider;
         GenRepo<IDbContext, ReviewableItem> repo;
         [TestInitialize()]
         public void GenRepoTestsInitialize() {
+            contextProvider = new Mock<IDbContextProvider>();
             unitOfWork = new Mock<IDbContext>();
+            contextProvider.Setup(x=>x.Instance()).Returns(unitOfWork.Object);
             unitOfWork.Setup((context)=>context.Set<ReviewableItem>()).Returns(Util.GetMockDbSet<ReviewableItem>(new List<ReviewableItem> {
                 new ReviewableItem { Id = 1}, new ReviewableItem { Id = 2 }, new ReviewableItem { Id = 4, Name = "item" }, new ReviewableItem { Id = 3, Name = "item" }
             }).Object);
-            repo = new GenRepo<IDbContext, ReviewableItem>(unitOfWork.Object);
+            repo = new GenRepo<IDbContext, ReviewableItem>(contextProvider.Object);
 
         }
         [TestMethod()]

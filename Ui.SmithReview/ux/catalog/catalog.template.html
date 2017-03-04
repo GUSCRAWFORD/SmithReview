@@ -16,16 +16,20 @@
     <div ng-if="!$ctrl.busy"
          ng-repeat="item in $ctrl.items"
          class="col-lg-6" >
-        <span class="fa fa-{{item.Icon}}" aria-hidden="true"></span>
-        <span>
-            <h4>{{ item.Name }}</h4>
-            <p>
-                <span uib-rating ng-model="item.AverageRating"
-                      max="$ctrl.constraints.maxRating"
-                      readonly="true"
-                      aria-labelledby="default-rating"></span>
-            </p>
-        </span>
+        <div class="visible-lg-inline-block">
+            <span class="fa fa-{{item.Icon}}" aria-hidden="true"></span>
+        </div>
+        <div class="visible-lg-inline-block">
+            <span>
+                <h4><a href="/#!/review/{{item.Id}}">{{ item.Name }}</a></h4>
+                <p>
+                    <span uib-rating ng-model="item.AverageRating"
+                          max="$ctrl.constraints.maxRating"
+                          readonly="true"
+                          aria-labelledby="default-rating"></span>
+                </p>
+            </span>
+        </div>
     </div>
     
 </div>

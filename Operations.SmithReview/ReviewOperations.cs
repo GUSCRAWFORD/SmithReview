@@ -6,14 +6,14 @@ using Data.SmithReview.Domain;
 using Data.SmithReview.Repos.Interfaces;
 using System.Collections.Generic;
 using System.Linq;
-using Operations.SmithReview.Extensions;
+using System;
 
 namespace Operations.SmithReview
 {
     public class ReviewOperations : Operations<ReviewModel, Review, int>, IReviewOperations {
-        public ReviewOperations(IDbContext unitOfWork, IGenRepo<IDbContext, Review> reviewRepo = null) :
-                base(unitOfWork) {
-            _reviewRepo = reviewRepo ?? new GenRepo<IDbContext, Review>(_context);
+        public ReviewOperations(IDbContextProvider contextProvider, IGenRepo<IDbContext, Review> reviewRepo = null) :
+                base(contextProvider) {
+            _reviewRepo = reviewRepo ?? new GenRepo<IDbContext, Review>(contextProvider);
 
         }
         IGenRepo<IDbContext, Review> _reviewRepo;
@@ -37,7 +37,8 @@ namespace Operations.SmithReview
             _reviewRepo.Upsert(new Review {
                 Comment = review.Comment,
                 Rating = review.Rating,
-                Reviewing = review.Reviewing.Id
+                Reviewing = review.Reviewing.Id,
+                Date = DateTime.Now.ToUniversalTime()
             });
             _context.SaveChanges();
         }
@@ -54,6 +55,10 @@ namespace Operations.SmithReview
             return new Review {
                     Id = model.Id
                 };
+        }
+
+        public IEnumerable<ReviewModel> AllByItem(int item, int page, int perPage, params string[] orderBy) {
+            return _reviewRepo.Query(review=>review.Reviewing == item, page, perPage, orderBy).Select(x=>ToModel(x));
         }
     }
 }

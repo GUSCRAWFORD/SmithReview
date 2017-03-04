@@ -12,16 +12,15 @@ namespace Data.SmithReview.Repos {
     public class GenRepo<TContext, TDomain> : IGenRepo<TContext, TDomain>
             where TDomain : BaseDomainModel
             where TContext : IDbContext {
-        public GenRepo(TContext context) {
-            _context = context;
-            _dbSet = context.Set<TDomain>();
+        public GenRepo(IDbContextProvider contextProvider) {
+            _context = (TContext) contextProvider.Instance();
+            _dbSet = _context.Set<TDomain>();
         }
-
         protected TContext _context;
         protected DbSet<TDomain> _dbSet;
         protected IQueryable<TDomain> _query;
         public virtual GenRepo<TContext, TDomain> Include(params string[] includedProperties) {
-            _query = _dbSet;
+            _query = _query ?? _dbSet;
             foreach(string include in includedProperties) {
                 _query = _query.Include(include);
             }
@@ -67,6 +66,7 @@ namespace Data.SmithReview.Repos {
         public virtual void Upsert(TDomain item) {
             if (item.HasEmptyId()) {
                 _dbSet.Add(item);
+                _context.Entry(item).State = EntityState.Added;
             }
             else {
                 _dbSet.Attach(item);
@@ -76,6 +76,11 @@ namespace Data.SmithReview.Repos {
 
         public virtual TDomain Find(params object[] keyValues) {
             return _dbSet.Find(keyValues);
+        }
+
+        public GenRepo<TContext, TDomain> AsNoTracking() {
+            _query = _query == null ? _dbSet.AsNoTracking() : _query.AsNoTracking();
+            return this;
         }
     }
 }

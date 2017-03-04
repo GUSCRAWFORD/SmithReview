@@ -10,29 +10,26 @@ namespace Api.SmithReview.Controllers
     [EnableCors(origins: "http://localhost:53180", headers: "*", methods: "*")]
     public class ItemsController : SmithReviewController
     {
-        private IItemOperations _itemOperations;
-        public ItemsController() {
-            _itemOperations = ServiceLocator.Current.GetInstance<IItemOperations>("IItemOperations");
-        }
-        ~ItemsController() {
-            _itemOperations.Dispose();
-        }
+        private IItemOperations _itemOperations = ServiceLocator.Current.GetInstance<IItemOperations>("IItemOperations");
         // GET: api/Items
         public IEnumerable<ItemModel> Get(int page = 0, int perPage = 0, string orderBy = "")
         {
-            return _itemOperations.All(page, perPage, orderBy.Split(','));
+            _itemOperations = ServiceLocator.Current.GetInstance<IItemOperations>("IItemOperations");
+                return _itemOperations.All(page, perPage, orderBy.Split(','));
         }
 
         // GET: api/Items/5
         public ItemModel Get(int id)
         {
-            return _itemOperations.SingleByKey(id);
+            _itemOperations = ServiceLocator.Current.GetInstance<IItemOperations>("IItemOperations");
+                return _itemOperations.SingleByKey(id);
         }
 
         // POST: api/Items
         public void Post([FromBody]ItemModel item)
         {
-            _itemOperations.Save(item);
+            _itemOperations = ServiceLocator.Current.GetInstance<IItemOperations>("IItemOperations");
+                _itemOperations.Save(item);
         }
 
         // PUT: api/Items/5

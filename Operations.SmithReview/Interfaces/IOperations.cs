@@ -4,7 +4,7 @@ using System;
 using System.Collections.Generic;
 
 namespace Operations.SmithReview.Interfaces {
-    public interface IOperations<TModel, TDomain, TKey> : IDisposable
+    public interface IOperations<TModel, TDomain, TKey>
             where TModel : BaseBusinessModel
             where TDomain : BaseDomainModel
             where TKey : IComparable {

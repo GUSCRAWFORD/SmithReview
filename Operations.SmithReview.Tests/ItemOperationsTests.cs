@@ -16,13 +16,16 @@ namespace Operations.SmithReview.Tests {
     public class ItemOperationsTests {
         ItemOperations operations;
         Mock<IDbContext> mockContext;
+        Mock<IDbContextProvider> mockContextProvider;
         Mock<IGenRepo<IDbContext, ReviewableItem>> mockRepository;
 
         [TestInitialize]
         public void ItemOperationsTestsIntialize() {
             mockContext = new Mock<IDbContext>();
+            mockContextProvider = new Mock<IDbContextProvider>();
+            mockContextProvider.Setup(x=>x.Instance()).Returns(mockContext.Object);
             mockRepository = new Mock<IGenRepo<IDbContext, ReviewableItem>>();
-            operations = new ItemOperations(mockContext.Object, mockRepository.Object);
+            operations = new ItemOperations(mockContextProvider.Object, mockRepository.Object);
 
         }
         [TestMethod]

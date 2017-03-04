@@ -71,6 +71,7 @@
     <Compile Include="Domain\Extensions\LinqExtensions.cs" />
     <Compile Include="Domain\Interfaces\IDbContext.cs" />
     <Compile Include="Domain\AnalyzedItem.cs" />
+    <Compile Include="Domain\Interfaces\IDbContextProvider.cs" />
     <Compile Include="Domain\Item.cs" />
     <Compile Include="Domain\ReviewableItem.cs" />
     <Compile Include="Domain\Review.cs" />

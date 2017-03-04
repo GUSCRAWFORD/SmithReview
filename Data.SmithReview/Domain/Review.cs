@@ -1,11 +1,7 @@
 namespace Data.SmithReview.Domain
 {
     using System;
-    using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
-    using System.ComponentModel.DataAnnotations.Schema;
-    using System.Data.Entity.Spatial;
-
     public partial class Review : BaseDomainModel
     {
 
@@ -19,5 +15,7 @@ namespace Data.SmithReview.Domain
         public int Reviewing { get; set; }
 
         public virtual ReviewableItem Item { get; set; }
+
+        public DateTimeOffset? Date { get; set; }
     }
 }

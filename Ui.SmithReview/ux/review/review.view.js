@@ -32,7 +32,7 @@ function reviewController(reviewResource, smithContstraints) {
 		ctrl.editing = {
 			Rating: val,
 			Comment: '',
-			Reviewing:{Id:ctrl.item.Id}
+			Reviewing: { Id: ctrl.item.Id }
 		};
 	}
 	function discardEdit() {
