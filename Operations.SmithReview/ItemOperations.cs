@@ -53,7 +53,9 @@ namespace Operations.SmithReview
                     AverageRating = domain.AverageRating ?? 0,
                     LowestRating = domain.LowestRating ?? 0,
                     HighestRating = domain.HighestRating ?? 0,
-                    ReviewCount = domain.ReviewCount ?? 0
+                    ReviewCount = domain.ReviewCount ?? 0,
+                    Date = domain.Date,
+                    Popularity = domain.Popularity ?? 0
                 };
         }
 

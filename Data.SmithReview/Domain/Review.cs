@@ -16,6 +16,6 @@ namespace Data.SmithReview.Domain
 
         public virtual ReviewableItem Item { get; set; }
 
-        public DateTimeOffset? Date { get; set; }
+        public DateTimeOffset Date { get; set; }
     }
 }

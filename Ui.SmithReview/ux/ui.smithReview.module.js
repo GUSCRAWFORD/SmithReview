@@ -10,3 +10,4 @@ angular.element(function () {
 });
 require('./catalog');
 require('./review');
+require('./order-ui');

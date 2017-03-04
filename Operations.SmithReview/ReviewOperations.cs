@@ -34,7 +34,7 @@ namespace Operations.SmithReview
         }
 
         public override void Save(ReviewModel review) {
-            _reviewRepo.Upsert(new Review {
+            _reviewRepo.AsNoTracking().Upsert(new Review {
                 Comment = review.Comment,
                 Rating = review.Rating,
                 Reviewing = review.Reviewing.Id,

@@ -22,6 +22,7 @@ reviewController.$inject = ['reviewResource', 'smithConstraints'];
 function reviewController(reviewResource, smithContstraints) {
 	var ctrl = this;
 	ctrl.busy = true;
+	ctrl.busyMessage;
 	ctrl.$onInit = onInit;
 	ctrl.edit = edit;
 	ctrl.discardEdit = discardEdit;
@@ -37,12 +38,21 @@ function reviewController(reviewResource, smithContstraints) {
 	}
 	function discardEdit() {
 		ctrl.editing = null;
+		ctrl.item.AverageRating = ctrl.defaultRating;
 	}
 	function saveEdit() {
+		ctrl.busy = true;
+		ctrl.busyMessage = "Saving your review...";
 		reviewResource.save(ctrl.editing).$promise.then(function () {
+			ctrl.busy = ctrl.busyMessage = false;
+			ctrl.item.AverageRating = ctrl.defaultRating;
+			ctrl.$onInit();
+			ctrl.editing = null;
 		});
 	}
 	function onInit() {
+
+		ctrl.defaultRating = ctrl.item.AverageRating;
 		reviewResource.query({
 			item: ctrl.item.Id,
 			perPage: smithContstraints.defaultPerPage,

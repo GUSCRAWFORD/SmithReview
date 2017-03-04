@@ -11,25 +11,28 @@
 -->
 <div class="row marketing">
     <div ng-if="$ctrl.busy">
-        <span class="fa fa-lg fa-spinner loading-spinner" aria-hidden="true"></span> Loading...
+        <span class="fa fa-lg fa-spinner loading-spinner" aria-hidden="true"></span> {{ $ctrl.busyMessage || 'Loading...' }}
     </div>
     <div class="col-lg-12 form-horizontal" ng-form>
-        <span class="fa fa-{{ $ctrl.item.Icon }}" aria-hidden="true"></span>
-        <span>
+        <div class="inline-block item-icon">
+            <span class="fa fa-{{$ctrl.item.Icon}}" aria-hidden="true"></span>
+        </div>
+        <div class="inline-block">
             <h4>{{ $ctrl.item.Name }}</h4>
             <p>
-                <span ng-show="$ctrl.editing"
+                <div ng-show="$ctrl.editing"
                       uib-rating ng-model="$ctrl.editing.Rating"
                       max="$ctrl.constraints.maxRating"
-                      aria-labelledby="default-rating"></span>
+                      aria-labelledby="default-rating"></div>
 
-                <span ng-show="$ctrl.item&&!$ctrl.editing"
+                <div ng-show="$ctrl.item&&!$ctrl.editing"
                       uib-rating ng-model="$ctrl.item.AverageRating"
                       max="$ctrl.constraints.maxRating"
                       aria-labelledby="default-rating"
-                      ng-change="$ctrl.edit($ctrl.item.AverageRating)"></span>
+                      ng-change="$ctrl.edit($ctrl.item.AverageRating)"></div>
+                <div class="text-muted">{{ $ctrl.item.Date | date: "MMMM d, yyyy" }}, {{$ctrl.item.ReviewCount}} Reviews</div>
             </p>
-        </span>
+        </div>
     </div>
     <div ng-if="$ctrl.editing">
         <textarea ng-model="$ctrl.editing.Comment"

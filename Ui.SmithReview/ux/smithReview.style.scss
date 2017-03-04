@@ -19,4 +19,9 @@ body {
     font-style:normal;
 }
 
+.inline-block {
+    display:inline-block;
+    vertical-align:text-top;
+}
 @import 'loading-spinner.scss';
+@import 'catalog/catalog.scss';

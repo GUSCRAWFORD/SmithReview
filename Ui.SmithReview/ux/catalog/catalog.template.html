@@ -10,25 +10,29 @@
 }
 -->
 <div class="row marketing">
-    <div ng-if="$ctrl.busy">
+    <div ng-if="$ctrl.busy" class="col-lg-12">
         <span class="fa fa-lg fa-spinner loading-spinner" aria-hidden="true"></span> Loading...
+    </div>
+    <div class="col-lg-12 text-right">
+        <order-ui></order-ui>
     </div>
     <div ng-if="!$ctrl.busy"
          ng-repeat="item in $ctrl.items"
-         class="col-lg-6" >
-        <div class="visible-lg-inline-block">
+         class="col-lg-6">
+
+        <div class="inline-block item-icon">
             <span class="fa fa-{{item.Icon}}" aria-hidden="true"></span>
         </div>
-        <div class="visible-lg-inline-block">
-            <span>
-                <h4><a href="/#!/review/{{item.Id}}">{{ item.Name }}</a></h4>
-                <p>
-                    <span uib-rating ng-model="item.AverageRating"
-                          max="$ctrl.constraints.maxRating"
-                          readonly="true"
-                          aria-labelledby="default-rating"></span>
-                </p>
-            </span>
+
+        <div class="inline-block">
+            <h4><a href="/#!/review/{{item.Id}}">{{ item.Name }}</a></h4>
+            <p>
+                <div uib-rating ng-model="item.AverageRating"
+                        max="$ctrl.constraints.maxRating"
+                        readonly="true"
+                        aria-labelledby="default-rating"></div>
+                <div class="text-muted">{{ item.Date | date: "MMMM d, yyyy" }}, {{item.ReviewCount}} Reviews</div>
+            </p>
         </div>
     </div>
     
