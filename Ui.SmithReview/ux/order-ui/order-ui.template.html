@@ -1,0 +1,17 @@
+﻿<div class="btn-group" uib-dropdown>
+    <button id="reverse{{$ctrl.id}}" type="button" class="btn btn-default">
+        <i class="fa fa-sort-amount-asc" aria-hidden="true"></i><span class="sr-only">Ascending or Descending</span>
+    </button>
+    <button type="button" class="btn btn-default" uib-dropdown-toggle>
+        Average Rating
+        <span class="caret"></span>
+        <span class="sr-only">Arrange by</span>
+    </button>
+    <ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="reverse{{$ctrl.id}}">
+        <li role="menuitem"><a href="#">Average Rating</a></li>
+        <li role="menuitem"><a href="#">Recently Reviewed</a></li>
+        <li role="menuitem"><a href="#">Popularity</a></li>
+        <li class="divider"></li>
+        <li role="menuitem"><a href="#">Name</a></li>
+    </ul>
+</div>
