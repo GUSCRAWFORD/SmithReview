@@ -1,0 +1,1 @@
+grunt --b ./Ui.SmithReview --gruntfile ./Ui.SmithReview/build-scripts/Gruntfile.js build
