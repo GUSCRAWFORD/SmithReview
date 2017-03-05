@@ -41,7 +41,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="RuleException.cs" />
-    <Compile Include="Rules.SmithReviews.cs" />
+    <Compile Include="Rules.cs" />
     <Compile Include="Constants.SmithReviews.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

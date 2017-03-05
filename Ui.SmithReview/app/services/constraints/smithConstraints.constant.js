@@ -4,5 +4,6 @@ angular.module('app.smithReview').constant('smithConstraints', {
 	defaultPerPage: 10,
 	defaultOrderBy: "Id",
 	maxRating: 5,
-	minRating: 1
+	minRating: 1,
+	minCommentLength: 4
 });

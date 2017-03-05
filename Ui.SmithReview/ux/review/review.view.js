@@ -4,12 +4,13 @@ angular.module('ui.smithReview')
 		template: require('./review.template.html'),
 		controller: reviewController,
 		bindings: {
-			item:'<'
+			item: '<',
+			form:'<'
 		}
 	})
 	.config(function ($routeProvider) {
 		$routeProvider.when('/review/:itemId', {
-			template: '<review item="$resolve.item"></review>',
+			template: '<form name="itemReviewForm"><review item="$resolve.item" form="itemReviewForm"></review></form>',
 			resolve: {
 				item:function (itemResource, $route) {
 					return itemResource.get({ id: $route.current.params.itemId }).$promise;
@@ -18,8 +19,8 @@ angular.module('ui.smithReview')
 		})
 	});
 
-reviewController.$inject = ['reviewResource','itemResource', 'smithConstraints','$q'];
-function reviewController(reviewResource, itemResource, smithContstraints, $q) {
+reviewController.$inject = ['$scope','reviewResource','itemResource', 'smithConstraints','$q'];
+function reviewController($scope, reviewResource, itemResource, smithContstraints, $q) {
 	var ctrl = this;
 	ctrl.busy = true;
 	ctrl.busyMessage;
@@ -53,14 +54,20 @@ function reviewController(reviewResource, itemResource, smithContstraints, $q) {
 		ctrl.item.AverageRating = ctrl.defaultRating;
 	}
 	function saveEdit() {
-		ctrl.busy = true;
-		ctrl.busyMessage = "Saving your review...";
-		reviewResource.save(ctrl.editing).$promise.then(function () {
-			ctrl.busy = ctrl.busyMessage = false;
-			ctrl.item.AverageRating = ctrl.defaultRating;
-			ctrl.refresh(true);
-			ctrl.editing = null;
-		});
+		if (ctrl.form.$valid) {
+			ctrl.invalidBlock = false;
+			ctrl.busy = true;
+			ctrl.busyMessage = "Saving your review...";
+			return reviewResource.save(ctrl.editing).$promise.then(function () {
+				ctrl.busy = ctrl.busyMessage = false;
+				ctrl.item.AverageRating = ctrl.defaultRating;
+				ctrl.refresh(true);
+				ctrl.editing = null;
+			});
+		}
+		else {
+			ctrl.invalidBlock = true;
+		}
 	}
 	function onInit() {
 		ctrl.defaultRating = ctrl.item.AverageRating;
@@ -76,7 +83,7 @@ function reviewController(reviewResource, itemResource, smithContstraints, $q) {
 			perPage: ctrl.orderReview.perPage,
 			orderBy: ctrl.orderReview.by
 		}).$promise;
-		$q.all(promises)
+		return $q.all(promises)
 			.then(function (result) {
 				ctrl.reviews = result.reviewsPage.Collection;
 				ctrl.orderReview.totalItems = result.reviewsPage.OfTotal
