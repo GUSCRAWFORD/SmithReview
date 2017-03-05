@@ -1,7 +1,6 @@
-﻿using Data.SmithReview.Domain.Interfaces;
-using Microsoft.Practices.ServiceLocation;
-using Microsoft.Practices.Unity;
+﻿using Microsoft.Practices.Unity;
 using Microsoft.Practices.Unity.Configuration;
+using Microsoft.Practices.ServiceLocation;
 using System.Web.Http;
 
 namespace Api.SmithReview
@@ -13,10 +12,6 @@ namespace Api.SmithReview
             GlobalConfiguration.Configure(WebApiConfig.Register);
             UnityServiceLocator locator = new UnityServiceLocator(CreateConfiguredUnityContainer());
             ServiceLocator.SetLocatorProvider(()=>locator);
-        }
-        public override void Dispose() {
-            ServiceLocator.Current.GetInstance<IDbContextProvider>("IDbContextProvider").Dispose();
-            base.Dispose();
         }
         public static IUnityContainer CreateConfiguredUnityContainer()
         {

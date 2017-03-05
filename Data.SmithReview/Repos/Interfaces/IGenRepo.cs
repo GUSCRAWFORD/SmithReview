@@ -19,6 +19,7 @@ namespace Data.SmithReview.Repos.Interfaces {
                 Expression<Func<TDomain, bool>> predicate = null,
                 int page = 0,
                 int perPage = 0,
+                Func<QueryDetails, object> getQueryResult = null,
                 params string[] orderBy);
 
         void Upsert(TDomain item);
@@ -30,6 +31,11 @@ namespace Data.SmithReview.Repos.Interfaces {
                 Expression<Func<TDomain, bool>> predicate = null,
                 int page = 0,
                 int perPage = 0,
+                Func<QueryDetails, object> getQueryDetails = null,
                 params string[] orderBy);
+    }
+    public class QueryDetails {
+        public int RecordsReturned { get; set; }
+        public int OfTotalRecords { get; set; }
     }
 }

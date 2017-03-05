@@ -42,8 +42,15 @@
   <ItemGroup>
     <Compile Include="BaseBusinessModel.cs" />
     <Compile Include="ItemModel.cs" />
+    <Compile Include="Page.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ReviewModel.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Data.SmithReview\Data.SmithReview.csproj">
+      <Project>{87b56629-0bf9-482d-8c20-13a44c729729}</Project>
+      <Name>Data.SmithReview</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

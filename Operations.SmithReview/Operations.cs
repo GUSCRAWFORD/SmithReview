@@ -14,16 +14,16 @@ namespace Operations.SmithReview {
             where TModel : BaseBusinessModel
             where TDomain : BaseDomainModel
             where TKey : IComparable {
-        public Operations(IDbContextProvider contextProvider) {
-            _context = contextProvider.Instance();
-        }
-        protected IDbContext _context;
 
+        public Operations(IDbContext context) {
+            _context = context;
+        }
         protected abstract TModel ToModel(TDomain domain);
         protected abstract TDomain ToDomain(TModel model);
         public abstract TModel SingleByKey(TKey id);
-        public abstract IEnumerable<TModel> All(int page, int perPage, params string[] orderBy);
+        public abstract Page<TModel> All(int page, int perPage, params string[] orderBy);
         public abstract void Save(TModel item);
+        protected IDbContext _context;
 
     }
 }

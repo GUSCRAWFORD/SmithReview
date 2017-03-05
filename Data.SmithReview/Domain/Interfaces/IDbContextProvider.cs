@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace Data.SmithReview.Domain.Interfaces {
-    public interface IDbContextProvider : IDisposable {
+    public interface IDbContextProvider {
         IDbContext Instance();
     }
 }

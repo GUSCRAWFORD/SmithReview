@@ -18,20 +18,19 @@
             <nav>
                 <ul class="nav nav-pills pull-right">
                 <li role="presentation" class="active"><a href="#">Home</a></li>
-                <li role="presentation"><a href="#">About</a></li>
-                <li role="presentation"><a href="#">Contact</a></li>
                 </ul>
             </nav>
             <h3 class="text-muted">Smith Reviews Sample</h3>
         </div>
 
         <div class="jumbotron">
-            <h1>Gus Plus TFS</h1>
-            <p class="lead">See how Gus uses TFS tasks and storyboarding to manage projects and deliver in a team.  Complete source and sprint-burndown available at guscrawford.visualstudio.com</p>
+            <h1><i class="vso-icon" aria-hidden="true"></i> Gus + TFS</h1>
+            <p class="lead">See how Gus uses TFS tasks and storyboarding to manage projects and deliver in a team.</p>
             <p>
-                <a class="btn btn-lg btn-success" href="https://guscrawford.visualstudio.com/SmithReview/" target="_blank" role="button"><i class="vso-icon" aria-hidden="true"></i> Join SmithReview <small>on Visualstudio.com</small></a>
+                <a class="btn btn-lg btn-success" href="https://guscrawford.visualstudio.com/SmithReview/" target="_blank" role="button">
+                    <i class="fa fa-sign-in" aria-hidden="true"></i> Join SmithReview <small>on visualstudio.com</small></a>
             </p>
-
+            <p class="text-muted">Complete source and sprint-burndown available at guscrawford.visualstudio.com</p>
         </div>
 
         <div ng-view></div>

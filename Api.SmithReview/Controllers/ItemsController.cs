@@ -4,32 +4,40 @@ using System.Web.Http;
 using Models.SmithReview;
 using System.Web.Http.Cors;
 using Microsoft.Practices.ServiceLocation;
+using Operations.SmithReview;
 
 namespace Api.SmithReview.Controllers
 {
     [EnableCors(origins: "http://localhost:53180", headers: "*", methods: "*")]
     public class ItemsController : SmithReviewController
     {
-        private IItemOperations _itemOperations = ServiceLocator.Current.GetInstance<IItemOperations>("IItemOperations");
+        private IItemOperations _itemOperations;
+        
         // GET: api/Items
-        public IEnumerable<ItemModel> Get(int page = 0, int perPage = 0, string orderBy = "")
+        public Page<ItemModel> Get(int page = 0, int perPage = 0, string orderBy = "")
         {
-            _itemOperations = ServiceLocator.Current.GetInstance<IItemOperations>("IItemOperations");
+            using(var context = _contextProvider.Instance()) {
+                _itemOperations = new ItemOperations(context);
                 return _itemOperations.All(page, perPage, orderBy.Split(','));
+            }
         }
 
         // GET: api/Items/5
         public ItemModel Get(int id)
         {
-            _itemOperations = ServiceLocator.Current.GetInstance<IItemOperations>("IItemOperations");
+            using(var context = _contextProvider.Instance()) {
+                _itemOperations = new ItemOperations(context);
                 return _itemOperations.SingleByKey(id);
+            }
         }
 
         // POST: api/Items
         public void Post([FromBody]ItemModel item)
         {
-            _itemOperations = ServiceLocator.Current.GetInstance<IItemOperations>("IItemOperations");
+            using(var context = _contextProvider.Instance()) {
+                _itemOperations = new ItemOperations(context);
                 _itemOperations.Save(item);
+            }
         }
 
         // PUT: api/Items/5

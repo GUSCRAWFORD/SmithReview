@@ -18,17 +18,29 @@ angular.module('ui.smithReview')
 		})
 	});
 
-reviewController.$inject = ['reviewResource', 'smithConstraints'];
-function reviewController(reviewResource, smithContstraints) {
+reviewController.$inject = ['reviewResource','itemResource', 'smithConstraints','$q'];
+function reviewController(reviewResource, itemResource, smithContstraints, $q) {
 	var ctrl = this;
 	ctrl.busy = true;
 	ctrl.busyMessage;
+	ctrl.defaultOrderBy = ['-Rating', '-Date'];
 	ctrl.$onInit = onInit;
 	ctrl.edit = edit;
 	ctrl.discardEdit = discardEdit;
 	ctrl.saveEdit = saveEdit;
+	ctrl.refresh = refresh;
 	ctrl.constraints = smithContstraints;
 
+	ctrl.orderReview = {
+		options: {
+			Rating: { label: 'Rating', type: 'numeric', defaultAsc: '-', prefix: { asc: 'Lowest', desc: 'Highest' } },
+			Date: { label: 'Review', type: 'amount', defaultAsc: '-', prefix: {asc:'Oldest',desc:'Newest'} }
+		},
+		by: ctrl.defaultOrderBy,
+		page: smithContstraints.defaultPage,
+		perPage: smithContstraints.defaultPerPage,
+		totalItems: 0
+	};
 	function edit(val) {
 		ctrl.editing = {
 			Rating: val,
@@ -46,20 +58,31 @@ function reviewController(reviewResource, smithContstraints) {
 		reviewResource.save(ctrl.editing).$promise.then(function () {
 			ctrl.busy = ctrl.busyMessage = false;
 			ctrl.item.AverageRating = ctrl.defaultRating;
-			ctrl.$onInit();
+			ctrl.refresh(true);
 			ctrl.editing = null;
 		});
 	}
 	function onInit() {
-
 		ctrl.defaultRating = ctrl.item.AverageRating;
-		reviewResource.query({
+		ctrl.refresh();
+	}
+
+	function refresh(itemToo) {
+		var promises = {};
+		if (itemToo) promises.updatedItem = itemResource.get({ id: ctrl.item.Id }).$promise;
+		promises.reviewsPage = reviewResource.get({
 			item: ctrl.item.Id,
-			perPage: smithContstraints.defaultPerPage,
-			orderBy: smithContstraints.defaultOrderBy
-		}).$promise.then(function (reviews) {
-			ctrl.reviews = reviews;
-			ctrl.busy = false;
-		});
+			page: ctrl.orderReview.page,
+			perPage: ctrl.orderReview.perPage,
+			orderBy: ctrl.orderReview.by
+		}).$promise;
+		$q.all(promises)
+			.then(function (result) {
+				ctrl.reviews = result.reviewsPage.Collection;
+				ctrl.orderReview.totalItems = result.reviewsPage.OfTotal
+				if (result.updatedItem)	ctrl.item = result.updatedItem;
+				ctrl.busy = false;
+			});
+
 	}
 }

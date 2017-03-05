@@ -12,8 +12,8 @@ namespace Data.SmithReview.Repos {
     public class GenRepo<TContext, TDomain> : IGenRepo<TContext, TDomain>
             where TDomain : BaseDomainModel
             where TContext : IDbContext {
-        public GenRepo(IDbContextProvider contextProvider) {
-            _context = (TContext) contextProvider.Instance();
+        public GenRepo(IDbContext context) {
+            _context = (TContext) context;
             _dbSet = _context.Set<TDomain>();
         }
         protected TContext _context;
@@ -31,20 +31,23 @@ namespace Data.SmithReview.Repos {
                 Expression<Func<TDomain, bool>> predicate = null,
                 int page = 0,
                 int perPage = 0,
+                Func<QueryDetails, object> getQueryDetails = null,
                 params string[] orderBy) {
-            return Query<TDomain>((x)=>x, predicate, page, perPage, orderBy);
+            return Query<TDomain>((x)=>x, predicate, page, perPage, getQueryDetails, orderBy);
         }
         public virtual IEnumerable<TResult> Query<TResult>(
-                Expression<Func<TDomain, TResult>> select,
+                Expression<Func<TDomain, TResult>> select = null,
                 Expression<Func<TDomain, bool>> predicate = null,
                 int page = 0,
                 int perPage = 0,
+                Func<QueryDetails, object> getQueryDetails = null,
                 params string[] orderBy) {
             IQueryable<TDomain> query = _query ?? _dbSet;
             IOrderedQueryable<TResult> orderedQuery = null;
             IQueryable<TResult> projectedQuery = null;
             if (predicate != null) query = query.Where(predicate);
-            projectedQuery = query.Select(select);
+            if (select != null) projectedQuery = query.Select(select);
+            else projectedQuery = (IQueryable<TResult>)query;
             if (orderBy != null) {
                 foreach(string column in orderBy){
                     char firstChar = column.First();
@@ -61,12 +64,15 @@ namespace Data.SmithReview.Repos {
                 projectedQuery = projectedQuery
                     .Skip((page - 1) * perPage)
                     .Take(perPage);
+            if (getQueryDetails != null) getQueryDetails.Invoke(new QueryDetails {
+                RecordsReturned = projectedQuery.Count(),
+                OfTotalRecords = query.Count()
+            });
             return projectedQuery.ToList();
         }
         public virtual void Upsert(TDomain item) {
             if (item.HasEmptyId()) {
                 _dbSet.Add(item);
-                _context.Entry(item).State = EntityState.Added;
             }
             else {
                 _dbSet.Attach(item);
@@ -77,7 +83,6 @@ namespace Data.SmithReview.Repos {
         public virtual TDomain Find(params object[] keyValues) {
             return _dbSet.Find(keyValues);
         }
-
         public GenRepo<TContext, TDomain> AsNoTracking() {
             _query = _query == null ? _dbSet.AsNoTracking() : _query.AsNoTracking();
             return this;

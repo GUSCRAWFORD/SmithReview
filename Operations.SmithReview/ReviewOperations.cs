@@ -4,42 +4,31 @@ using Data.SmithReview.Domain.Interfaces;
 using Models.SmithReview;
 using Data.SmithReview.Domain;
 using Data.SmithReview.Repos.Interfaces;
-using System.Collections.Generic;
 using System.Linq;
 using System;
 
 namespace Operations.SmithReview
 {
     public class ReviewOperations : Operations<ReviewModel, Review, int>, IReviewOperations {
-        public ReviewOperations(IDbContextProvider contextProvider, IGenRepo<IDbContext, Review> reviewRepo = null) :
-                base(contextProvider) {
-            _reviewRepo = reviewRepo ?? new GenRepo<IDbContext, Review>(contextProvider);
-
+        public ReviewOperations(IDbContext context, IGenRepo<IDbContext, Review> reviewRepo = null) :
+                base(context) {
+            _reviewRepo = reviewRepo ?? new GenRepo<IDbContext, Review>(context);
         }
         IGenRepo<IDbContext, Review> _reviewRepo;
         public override ReviewModel SingleByKey(int id) {
             return ToModel(_reviewRepo.Find(id));
         }
-        public virtual IEnumerable<ReviewModel> All() {
-            return _reviewRepo.Query().Select(x=>new ReviewModel {
-                Id = x.Id,
-                Rating = x.Rating,
-                Reviewing = new ItemModel { Id = x.Reviewing },
-                Comment = x.Comment
-            });
-        }
 
-        public override IEnumerable<ReviewModel> All(int page, int perPage, params string[] orderBy) {
-            return _reviewRepo.Query(null, page, perPage, orderBy).Select(x=>ToModel(x));
+        public override Page<ReviewModel> All(int page, int perPage, params string[] orderBy) {
+            QueryDetails details = null;
+            return new Page<ReviewModel> {
+                Collection = _reviewRepo.Query(null, page, perPage, (r)=>details=r, orderBy).Select(x=>ToModel(x)),
+                OfTotal = details.OfTotalRecords
+            };
         }
 
         public override void Save(ReviewModel review) {
-            _reviewRepo.AsNoTracking().Upsert(new Review {
-                Comment = review.Comment,
-                Rating = review.Rating,
-                Reviewing = review.Reviewing.Id,
-                Date = DateTime.Now.ToUniversalTime()
-            });
+            _reviewRepo.Upsert(ToDomain(review));
             _context.SaveChanges();
         }
 
@@ -48,17 +37,25 @@ namespace Operations.SmithReview
                 Id = domain.Id,
                 Rating = domain.Rating,
                 Reviewing = new ItemModel { Id = domain.Reviewing },
-                Comment = domain.Comment
+                Comment = domain.Comment,
+                Date = domain.Date
             };
         }
         protected override Review ToDomain(ReviewModel model) {
             return new Review {
-                    Id = model.Id
-                };
+                Comment = model.Comment,
+                Rating = model.Rating,
+                Reviewing = model.Reviewing.Id,
+                Date = DateTime.Now.ToUniversalTime()
+            };
         }
 
-        public IEnumerable<ReviewModel> AllByItem(int item, int page, int perPage, params string[] orderBy) {
-            return _reviewRepo.Query(review=>review.Reviewing == item, page, perPage, orderBy).Select(x=>ToModel(x));
+        public Page<ReviewModel> AllByItem(int item, int page, int perPage, params string[] orderBy) {
+            QueryDetails details = null;
+            return new Page<ReviewModel> {
+                Collection = _reviewRepo.Query(review=>review.Reviewing == item, page, perPage, (r)=>details = r, orderBy).Select(x=>ToModel(x)),
+                OfTotal = details.OfTotalRecords
+            };
         }
     }
 }

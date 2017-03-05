@@ -22,6 +22,13 @@ body {
 .inline-block {
     display:inline-block;
     vertical-align:text-top;
+    &-middle {
+        vertical-align:middle;
+    }
+    &-text-bottom {
+        vertical-align:text-bottom
+    }
 }
 @import 'loading-spinner.scss';
 @import 'catalog/catalog.scss';
+@import 'review/review.scss';

@@ -17,13 +17,34 @@ function catalogController(itemResource, smithContstraints) {
 	ctrl.$readOnly = true;
 	ctrl.$onInit = onInit;
 	ctrl.constraints = smithContstraints;
+	ctrl.refresh = refresh;
+	ctrl.defaultOrderBy = ['-Popularity', '-AverageRating', '-Date', '+Name'];
+
+	ctrl.orderItems = {
+		options: {
+			Popularity: { label:'Popular', prefix:{asc:'Least',desc:'Most'}, type: 'amount', defaultAsc:'-' },
+			AverageRating: { label: 'Average Rating', prefix: { asc: 'Lowest', desc: 'Highest' }, type: 'amount', defaultAsc: '-' },
+			Date: { label: 'Reviewed', prefix: { asc: 'Oldest', desc: 'Most Recent' }, type: 'amount', defaultAsc: '-' },
+			Name: { label: 'Name', prefix: { asc: '(Ascending)', desc: '(Descending)' }, type: 'alpha', defaultAsc: '+' }
+		},
+		by: ctrl.defaultOrderBy,
+		page: smithContstraints.defaultPage,
+		perPage: smithContstraints.defaultPerPage,
+		totalItems:0
+	};
 	function onInit() {
-		itemResource.query({ page: smithContstraints.defaultPage,
-			perPage: smithContstraints.defaultPerPage,
-			orderBy: smithContstraints.defaultOrderBy
-		}).$promise.then(function (items) {
-			ctrl.items = items;
+		ctrl.refresh();
+	}
+
+	function refresh() {
+		itemResource.get({
+			page: ctrl.orderItems.page,
+			perPage: ctrl.orderItems.perPage,
+			orderBy: ctrl.orderItems.by
+		}).$promise.then(function (itemsPage) {
+			ctrl.items = itemsPage.Collection;
 			ctrl.busy = false;
+			ctrl.orderItems.totalItems = itemsPage.OfTotal;
 		});
 	}
 }

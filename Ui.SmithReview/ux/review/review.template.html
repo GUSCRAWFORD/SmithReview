@@ -17,6 +17,7 @@
         <div class="inline-block item-icon">
             <span class="fa fa-{{$ctrl.item.Icon}}" aria-hidden="true"></span>
         </div>
+
         <div class="inline-block">
             <h4>{{ $ctrl.item.Name }}</h4>
             <p>
@@ -30,7 +31,7 @@
                       max="$ctrl.constraints.maxRating"
                       aria-labelledby="default-rating"
                       ng-change="$ctrl.edit($ctrl.item.AverageRating)"></div>
-                <div class="text-muted">{{ $ctrl.item.Date | date: "MMMM d, yyyy" }}, {{$ctrl.item.ReviewCount}} Reviews</div>
+                <div class="text-muted">{{ $ctrl.item.Date | date: "MMMM d, yyyy" }}, {{$ctrl.item.ReviewCount}} Review{{$ctrl.item.ReviewCount > 1?'s':''}}</div>
             </p>
         </div>
     </div>
@@ -47,15 +48,34 @@
        
 {"Id":2,"Rating":5,"Comment":"Awesome!"}   
     -->
+    <div class="col-lg-12 organizer">
+        <div class="inline-block">
+            <ul uib-pagination ng-change="$ctrl.refresh()"
+                items-per-page="$ctrl.orderReview.perPage"
+                total-items="$ctrl.orderReview.totalItems"
+                ng-model="$ctrl.orderReview.page"
+                ng-hide="$ctrl.busy"
+                max-size="10" class="pagination" boundary-links="true" rotate="false"
+                previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"></ul>
+        </div>
+        <div class="inline-block pull-right">
+            <order-ui id="{{$ctrl.item.Id}}"
+                      order="$ctrl.orderReview"
+                      update="$ctrl.refresh()"
+                      disabled="$ctrl.busy"></order-ui>
+        </div>
+    </div>
+    <hr>
     <div ng-if="!$ctrl.busy"
          class="col-lg-6"
          ng-repeat="review in $ctrl.reviews">
         <span>{{ review.Comment }}</span>
         <p>
-            <span uib-rating ng-model="review.Rating"
+            <div uib-rating ng-model="review.Rating"
                   max="$ctrl.constraints.maxRating"
                   readonly="true"
-                  aria-labelledby="default-rating"></span>
+                  aria-labelledby="default-rating"></div>
+            <div class="text-muted">{{ review.Date | date: "MMMM d, yyyy" }}</div>
         </p>
     </div>
 </div>

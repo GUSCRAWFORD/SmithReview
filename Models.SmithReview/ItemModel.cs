@@ -12,7 +12,7 @@ namespace Models.SmithReview {
         public int ReviewCount { get; set; }
         public int HighestRating { get; set; }
         public int LowestRating { get; set; }
-        public DateTimeOffset Date { get; set; }
+        public DateTimeOffset? Date { get; set; }
         public int Popularity { get; set; }
     }
 }

@@ -10,23 +10,26 @@ using System.Linq;
 namespace Operations.SmithReview
 {
     public class ItemOperations : Operations<ItemModel, ReviewableItem, int>, IItemOperations {
-        public ItemOperations(IDbContextProvider contextProvider, IGenRepo<IDbContext, ReviewableItem> itemsRepo = null) :
-                base (contextProvider) {
-            _contextProvider = contextProvider;
-            _itemsRepo = itemsRepo ?? new GenRepo<IDbContext, ReviewableItem>(contextProvider);
+        public ItemOperations(IDbContext context, IGenRepo<IDbContext, ReviewableItem> itemsRepo = null) :
+                base (context) {
+            _context = context;
+            _itemsRepo = itemsRepo ?? new GenRepo<IDbContext, ReviewableItem>(context);
         }
 
-        IDbContextProvider _contextProvider;
         IGenRepo<IDbContext, ReviewableItem> _itemsRepo;
 
         public override ItemModel SingleByKey(int id) {
-            var analyzedItemsRepo = new GenRepo<IDbContext, AnalyzedItem>(_contextProvider);
-            return ToModel(analyzedItemsRepo.AsNoTracking().Find(id));
+            var analyzedItemsRepo = new GenRepo<IDbContext, AnalyzedItem>(_context);
+            return ToModel(analyzedItemsRepo.Query<AnalyzedItem>(null, item=>item.Id == id).Single());
         }
 
-        public override IEnumerable<ItemModel> All(int page, int perPage, params string[] orderBy) {
-            var analyzedItemsRepo = new GenRepo<IDbContext, AnalyzedItem>(_contextProvider);
-            return analyzedItemsRepo.AsNoTracking().Query(null, page, perPage, orderBy).Select(x=>ToModel(x));
+        public override Page<ItemModel> All(int page, int perPage, params string[] orderBy) {
+            var analyzedItemsRepo = new GenRepo<IDbContext, AnalyzedItem>(_context);
+            QueryDetails r = null;
+            return new Page<ItemModel> {
+                Collection = analyzedItemsRepo.Query(null, page, perPage, (x)=>r = x,orderBy).Select(x=>ToModel(x)),
+                OfTotal = r.OfTotalRecords
+            };
         }
 
         public override void Save(ItemModel item) {

@@ -25,7 +25,7 @@ namespace Operations.SmithReview.Tests {
             mockContextProvider = new Mock<IDbContextProvider>();
             mockContextProvider.Setup(x=>x.Instance()).Returns(mockContext.Object);
             mockRepository = new Mock<IGenRepo<IDbContext, ReviewableItem>>();
-            operations = new ItemOperations(mockContextProvider.Object, mockRepository.Object);
+            operations = new ItemOperations(mockContext.Object, mockRepository.Object);
 
         }
         [TestMethod]

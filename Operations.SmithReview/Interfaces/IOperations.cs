@@ -11,7 +11,7 @@ namespace Operations.SmithReview.Interfaces {
 
         TModel SingleByKey(TKey id);
 
-        IEnumerable<TModel> All(int page, int perPage, params string[] orderBy);
+        Page<TModel> All(int page, int perPage, params string[] orderBy);
 
         void Save(TModel item);
     }
