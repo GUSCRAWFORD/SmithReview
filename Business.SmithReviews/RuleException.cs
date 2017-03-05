@@ -4,9 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Business.SmithReviews
-{
-    public class Class1
-    {
+namespace Business.SmithReviews {
+    public class RuleException : Exception{
     }
 }

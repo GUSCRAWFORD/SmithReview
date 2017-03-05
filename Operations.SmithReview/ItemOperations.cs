@@ -20,7 +20,7 @@ namespace Operations.SmithReview
 
         public override ItemModel SingleByKey(int id) {
             var analyzedItemsRepo = new GenRepo<IDbContext, AnalyzedItem>(_context);
-            return ToModel(analyzedItemsRepo.Query<AnalyzedItem>(null, item=>item.Id == id).Single());
+            return ToModel(analyzedItemsRepo.Find(id));
         }
 
         public override Page<ItemModel> All(int page, int perPage, params string[] orderBy) {

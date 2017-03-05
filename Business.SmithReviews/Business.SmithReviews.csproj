@@ -40,9 +40,16 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Class1.cs" />
+    <Compile Include="RuleException.cs" />
+    <Compile Include="Rules.SmithReviews.cs" />
     <Compile Include="Constants.SmithReviews.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Models.SmithReview\Models.SmithReview.csproj">
+      <Project>{7acffad7-9c66-42e8-b385-20c5b98ea69f}</Project>
+      <Name>Models.SmithReview</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -6,6 +6,7 @@ using Data.SmithReview.Domain;
 using Data.SmithReview.Repos.Interfaces;
 using System.Linq;
 using System;
+using Business.SmithReviews;
 
 namespace Operations.SmithReview
 {
@@ -28,6 +29,8 @@ namespace Operations.SmithReview
         }
 
         public override void Save(ReviewModel review) {
+            Rules.Review.CommentIsLongerThan4Characters(review);
+            Rules.Review.RatingIsBewtween1And5(review);
             _reviewRepo.Upsert(ToDomain(review));
             _context.SaveChanges();
         }

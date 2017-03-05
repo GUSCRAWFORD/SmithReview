@@ -50,6 +50,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Business.SmithReviews\Business.SmithReviews.csproj">
+      <Project>{a629b513-71fb-4ac5-8658-37066ea715fb}</Project>
+      <Name>Business.SmithReviews</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Data.SmithReview\Data.SmithReview.csproj">
       <Project>{87b56629-0bf9-482d-8c20-13a44c729729}</Project>
       <Name>Data.SmithReview</Name>

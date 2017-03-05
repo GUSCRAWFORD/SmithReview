@@ -28,9 +28,20 @@
             <p class="lead">See how Gus uses TFS tasks and storyboarding to manage projects and deliver in a team.</p>
             <p>
                 <a class="btn btn-lg btn-success" href="https://guscrawford.visualstudio.com/SmithReview/" target="_blank" role="button">
-                    <i class="fa fa-sign-in" aria-hidden="true"></i> Join SmithReview <small>on visualstudio.com</small></a>
+                    <i class="fa fa-sign-in" aria-hidden="true"></i> Join SmithReview <small>guscrawford.visualstudio.com/SmithReview</small></a>
             </p>
-            <p class="text-muted">Complete source and sprint-burndown available at guscrawford.visualstudio.com</p>
+            <p>
+                <a class="btn btn-sm btn-primary" href="mailto:crawford.gus@gmail.com?subject=Requesting%20Access%20To%20SmithReview" target="_blank" role="button">
+                    <i class="fa fa-comment" aria-hidden="true"></i> Request Access to TFS Portal</a>
+                <a class="btn btn-sm btn-default" href="https://github.com" target="_blank" role="button">
+                    <i class="fa fa-github" aria-hidden="true"></i> Clone from GitHub</a>
+            </p>
+            <p class="text-muted">
+                Complete source and sprint-burndown available at TFS web-portal<br>
+                <small>
+                    You can clone this source now from <a href="http://github.com">GitHub</a>, or send an <a href="mailto:crawford.gus@gmail.com?subject=Requesting%20Access%20To%20SmithReview">email</a> with a Microsoft email to be added to the team.
+                </small>
+            </p>
         </div>
 
         <div ng-view></div>
