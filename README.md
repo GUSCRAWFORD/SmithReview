@@ -2,7 +2,7 @@
 An end-to-end practical example illustrating the different platforms and patterns I'm experienced with.
 
 # Getting Started
-The project requries you have Visual Studio and Node Js installed and aren't blocked from updating packages see [Alternative Source]
+The project requries you have Visual Studio and Node Js installed and aren't blocked from updating packages
 1.	Clone or Download source
 2.  Restore NuGet Packages
 3.	Build
